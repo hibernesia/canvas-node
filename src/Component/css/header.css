@@ -1,0 +1,48 @@
+body {
+    background: #F1F3F6;
+}
+* {
+    font-family: 'Roboto', sans-serif;
+    margin: 0px;
+    padding: 0px;
+} 
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 5px 20px;
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,.08);
+    border-radius: 20px;
+    margin: 15px;
+}
+.navbar ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+}
+.navbar ul li {
+    padding: 20px;
+    font-weight: 500;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+.navbar .con-logo svg {
+    width: 100px;
+}
+.navbar .con-btns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.navbar button {
+    padding: 12px 30px;
+    background: #000;
+    color: #fff;
+    border: 0px;
+    border-radius: 18px;
+    outline: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
