@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-import cytoscape from 'cytoscape'
+import cytoscape from 'cytoscape';
+import edgehandles from 'cytoscape-edgehandles';
+import cxtmenu from 'cytoscape-cxtmenu';
+
+cytoscape.use( cxtmenu );
+cytoscape.use( edgehandles );
 export default class Canvas extends Component {
     constructor(props) {
         super(props)
@@ -8,6 +13,7 @@ export default class Canvas extends Component {
         }
     }
     componentDidMount(){
+        
         this.cy = cytoscape(
             {
                 container: document.getElementById('cy'),
@@ -18,7 +24,6 @@ export default class Canvas extends Component {
                     selector: 'node',
                         style: {
                             'content': 'data(label)',
-                            'background-color': 'data(warna)',
                             "width": '30px',
                             "height": '30px',
                             'text-margin-y':'-10px',
@@ -42,6 +47,58 @@ export default class Canvas extends Component {
                             "width": 1
                         }
                     },
+                    {
+                        selector: '.eh-handle',
+                        style: {
+                          'background-color': 'red',
+                          'width': 12,
+                          'height': 12,
+                          'shape': 'ellipse',
+                          'overlay-opacity': 0,
+                          'border-width': 12, // makes the handle easier to hit
+                          'border-opacity': 0
+                        }
+                      },
+          
+                      {
+                        selector: '.eh-hover',
+                        style: {
+                          'background-color': 'red'
+                        }
+                      },
+          
+                      {
+                        selector: '.eh-source',
+                        style: {
+                          'border-width': 2,
+                          'border-color': 'red'
+                        }
+                      },
+          
+                      {
+                        selector: '.eh-target',
+                        style: {
+                          'border-width': 2,
+                          'border-color': 'red'
+                        }
+                      },
+          
+                      {
+                        selector: '.eh-preview, .eh-ghost-edge',
+                        style: {
+                          'background-color': 'red',
+                          'line-color': 'red',
+                          'target-arrow-color': 'red',
+                          'source-arrow-color': 'red'
+                        }
+                      },
+          
+                      {
+                        selector: '.eh-ghost-edge.eh-preview-active',
+                        style: {
+                          'opacity': 0
+                        }
+                      }
                 ],
                 elements: [ // list of graph elements to start with
                     { // node a
@@ -56,11 +113,62 @@ export default class Canvas extends Component {
                   ],
                 layout: {
                     name: 'random',
+                    fit:true,
+                    animate:false,
                 }
             }
         );
+
+        this.cy.cxtmenu({
+            selector: 'node, edge',
+
+            commands: [
+                {
+                    content: '<span class="fa fa-flash fa-2x"></span>',
+                    select: function(ele){
+                        console.log( ele.id() );
+                    }
+                },
+
+                {
+                    content: '<span class="fa fa-star fa-2x"></span>',
+                    select: function(ele){
+                        console.log( ele.data('name') );
+                    },
+                    enabled: false
+                },
+
+                {
+                    content: 'Text',
+                    select: function(ele){
+                        console.log( ele.position() );
+                    }
+                }
+            ]
+        });
+
+        this.cy.cxtmenu({
+            selector: 'core',
+
+            commands: [
+                {
+                    content: 'bg1',
+                    select: function(){
+                        console.log( 'bg1' );
+                    }
+                },
+
+                {
+                    content: 'bg2',
+                    select: function(){
+                        console.log( 'bg2' );
+                    }
+                }
+            ]
+        });
     }
 
+  
     render() {
         const cyStyle = {
             width: "100%",
