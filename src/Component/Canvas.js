@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
 import cxtmenu from 'cytoscape-cxtmenu';
+import $ from "jquery";
+import { v4 as uuidv4 } from 'uuid';
+import DialogCustom from './subcomponent/DialogCustom';
+import MenuBar from './MenuBar';
+import { TextField } from '@fluentui/react';
 
 cytoscape.use( cxtmenu );
 cytoscape.use( edgehandles );
@@ -9,7 +14,8 @@ export default class Canvas extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            
+            isClosed: true,
+            node_name :''
         }
     }
     componentDidMount(){
@@ -24,8 +30,8 @@ export default class Canvas extends Component {
                     selector: 'node',
                         style: {
                             'content': 'data(label)',
-                            "width": '30px',
-                            "height": '30px',
+                            "width": '20px',
+                            "height": '20px',
                             'text-margin-y':'-10px',
                         }
                     },
@@ -51,22 +57,14 @@ export default class Canvas extends Component {
                         selector: '.eh-handle',
                         style: {
                           'background-color': 'red',
-                          'width': 12,
-                          'height': 12,
+                          'width': 0,
+                          'height': 0,
                           'shape': 'ellipse',
                           'overlay-opacity': 0,
                           'border-width': 12, // makes the handle easier to hit
                           'border-opacity': 0
                         }
                       },
-          
-                      {
-                        selector: '.eh-hover',
-                        style: {
-                          'background-color': 'red'
-                        }
-                      },
-          
                       {
                         selector: '.eh-source',
                         style: {
@@ -100,17 +98,6 @@ export default class Canvas extends Component {
                         }
                       }
                 ],
-                elements: [ // list of graph elements to start with
-                    { // node a
-                      data: { id: 'a' , label:'a'}
-                    },
-                    { // node b
-                      data: { id: 'b' , label:'b'}
-                    },
-                    { // edge ab
-                      data: { id: 'ab', source: 'a', target: 'b' }
-                    }
-                  ],
                 layout: {
                     name: 'random',
                     fit:true,
@@ -121,7 +108,7 @@ export default class Canvas extends Component {
 
         this.cy.cxtmenu({
             selector: 'node, edge',
-
+            menuRadius: function(ele){ return 85; },
             commands: [
                 {
                     content: '<span class="fa fa-flash fa-2x"></span>',
@@ -146,29 +133,78 @@ export default class Canvas extends Component {
                 }
             ]
         });
+        var eh = this.cy.edgehandles()
+        this.cy.one('cxttap', function(evt){
+            eh.disableDrawMode()
+        });
 
         this.cy.cxtmenu({
-            selector: 'core',
-
+            selector: 'core',   
+            menuRadius: function(ele){ return 85; },
+            indicatorSize: 24,
+            minSpotlightRadius: 24, // the minimum radius in pixels of the spotlight
+            maxSpotlightRadius: 38,
             commands: [
                 {
-                    content: 'bg1',
-                    select: function(){
-                        console.log( 'bg1' );
-                    }
+                    content: 'Node',
+                    select: this.handleDialogOpen
                 },
 
                 {
-                    content: 'bg2',
-                    select: function(){
-                        console.log( 'bg2' );
-                    }
+                    content: 'Edge',
+                    select: this.addEdge
                 }
-            ]
+            ],
+            openMenuEvents: 'cxttapstart',
+            atMouse:true
         });
     }
+   
+    addEdge =()=>{
+        var eh = this.cy.edgehandles()
+        eh.enableDrawMode()
+    }
 
-  
+    handleDialogOpen = () =>{
+        this.setState({
+            isClosed : false
+        },()=>{console.log(this.state.isClosed)})
+    }
+
+    handleDialogClose = ()=>{
+        this.setState({
+            isClosed:true
+        })
+    }
+
+    handleAddNewNode = (e) =>{
+        e.preventDefault();
+        this.setState({Clicked: !this.state.Clicked});
+        var data_add = {}, unique_id = uuidv4()
+        
+        data_add = {
+            group: 'nodes',
+            data: {
+                    id : unique_id,
+                    label: this.state.node_name,
+                    size:30,
+                    warna : "#a36f34"
+            },
+            renderedPosition: {
+                x: 50,
+                y: 50,
+            },
+        }
+        this.cy.add([data_add])
+        this.setState({
+            isClosed:true
+        })
+    }
+    handleNodeName = (e) =>{
+        this.setState({
+            node_name : e.target.value
+        })
+    }
     render() {
         const cyStyle = {
             width: "100%",
@@ -176,7 +212,18 @@ export default class Canvas extends Component {
         };
         return (
             <div>
+                <MenuBar />
                 <div style={cyStyle} id="cy"/>
+                <DialogCustom
+                    isOpen={this.state.isClosed}
+                    handleClose={this.handleDialogClose}
+                    title="tes"
+                    handleExecute={this.handleAddNewNode}
+                    buttonConfirmTitle="Add"
+                    buttonDiscardTitle="Cancel"
+                >
+                    <TextField autoComplete="off" onChange={this.handleNodeName} placeholder="Name Node" />
+                </DialogCustom>
             </div>
         )
     }
