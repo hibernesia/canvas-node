@@ -15,11 +15,11 @@ export default class Canvas extends Component {
         super(props)
         this.state = {
             isClosed: true,
-            node_name :''
+            node_name :'',
+            cy:[]
         }
     }
     componentDidMount(){
-        
         this.cy = cytoscape(
             {
                 container: document.getElementById('cy'),
@@ -158,6 +158,10 @@ export default class Canvas extends Component {
             openMenuEvents: 'cxttapstart',
             atMouse:true
         });
+
+        this.setState({
+            cy:this.cy
+        })
     }
    
     addEdge =()=>{
@@ -212,7 +216,7 @@ export default class Canvas extends Component {
         };
         return (
             <div>
-                <MenuBar />
+                <MenuBar cy={this.state.cy}/>
                 <div style={cyStyle} id="cy"/>
                 <DialogCustom
                     isOpen={this.state.isClosed}
