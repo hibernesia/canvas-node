@@ -9,8 +9,6 @@ export default class MenuBar extends Component {
             <div>
                 <CommandBar
                     items={_items}
-                    farItems={_farItems}
-                    ariaLabel="Use left and right arrow keys to navigate between commands"
                 />
             </div>
         )
@@ -21,19 +19,19 @@ const _items= [
   {
     key: 'newItem',
     text: 'New',
-    cacheKey: 'myCacheKey', // changing this key will invalidate this item's cache
+    cacheKey: 'myCacheKey',
     iconProps: { iconName: 'Add' },
     subMenuProps: {
       items: [
         {
           key: 'node',
           text: 'Node',
-          iconProps: { iconName: 'Circle' },
+          iconProps: { iconName: 'LocationCircle' },
         },
         {
           key: 'edge',
           text: 'Edge',
-          iconProps: { iconName: 'Arrow' },
+          iconProps: { iconName: 'ArrowTallUpRight' },
         },
       ],
     },
@@ -43,28 +41,6 @@ const _items= [
     text: 'Download',
     iconProps: { iconName: 'Download' },
     onClick: () => console.log('Download'),
-  },
-];
-
-
-const _farItems = [
-  {
-    key: 'tile',
-    text: 'Grid view',
-    // This needs an ariaLabel since it's icon-only
-    ariaLabel: 'Grid view',
-    iconOnly: true,
-    iconProps: { iconName: 'Tiles' },
-    onClick: () => console.log('Tiles'),
-  },
-  {
-    key: 'info',
-    text: 'Info',
-    // This needs an ariaLabel since it's icon-only
-    ariaLabel: 'Info',
-    iconOnly: true,
-    iconProps: { iconName: 'Info' },
-    onClick: () => console.log('Info'),
   },
 ];
 
