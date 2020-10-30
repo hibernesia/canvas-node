@@ -9,43 +9,58 @@ class MenuBar extends Component {
 		super(props)
 	}
 
-	componentDidUpdate(){
-		console.log(this.props.nama)
-	}
-  	exportJPG = ()=>{
-		console.log(this.props.cy)
+    exportJPG = ()=>{
 		saveAs(this.props.cy.jpg(),"graph download.jpg")
+    }
+    exportPNG = ()=>{
+		saveAs(this.props.cy.png({bg:"white"}),"graph download.png")
 	}
     render() {
         return (
             <div>
                 <CommandBar
                     items={[{
-                      key: 'newItem',
-                      text: 'New',
-                      cacheKey: 'myCacheKey',
-                      iconProps: { iconName: 'Add' },
-                      subMenuProps: {
-                        items: [
-                          {
-                            key: 'node',
-                            text: 'Node',
-                            iconProps: { iconName: 'LocationCircle' },
-                          },
-                          {
-                            key: 'edge',
-                            text: 'Edge',
-                            iconProps: { iconName: 'ArrowTallUpRight' },
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      key: 'download',
-                      text: 'Download',
-                      iconProps: { iconName: 'Download' },
-                      onClick: this.exportJPG,
-                    }]}
+                        key: 'newItem',
+                        text: 'New',
+                        cacheKey: 'myCacheKey',
+                        iconProps: { iconName: 'Add' },
+                        subMenuProps: {
+                            items: [
+                            {
+                                key: 'node',
+                                text: 'Node',
+                                iconProps: { iconName: 'LocationCircle' },
+                            },
+                            {
+                                key: 'edge',
+                                text: 'Edge',
+                                iconProps: { iconName: 'ArrowTallUpRight' },
+                            },
+                            ],
+                        }},
+                        {
+                            key: 'export',
+                            text: 'Export',
+                            cacheKey: 'myCacheKey',
+                            iconProps: { iconName: 'Share' },
+                            subMenuProps: {
+                            items: [
+                                {
+                                    key: 'jpg',
+                                    text: 'JPG',
+                                    iconProps: { iconName: 'FileImage' },
+                                    onClick : this.exportJPG
+                                },
+                                {
+                                    key: 'png',
+                                    text: 'PNG',
+                                    iconProps: { iconName: 'FileImage' },
+                                    onClick : this.exportPNG
+                                },
+                            ],
+                        }}
+                    ]
+                }
                 />
             </div>
         )
