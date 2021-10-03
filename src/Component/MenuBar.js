@@ -5,9 +5,9 @@ import {saveAs} from "file-saver"
 initializeIcons();
 
 class MenuBar extends Component {
-	constructor(props) {
-		super(props)
-	}
+	// constructor(props) {
+	// 	super(props)
+	// }
 
     exportJPG = ()=>{
 		saveAs(this.props.cy.jpg(),"graph download.jpg")

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
 import cxtmenu from 'cytoscape-cxtmenu';
-import $ from "jquery";
+// import $ from "jquery";
 import { v4 as uuidv4 } from 'uuid';
 import DialogCustom from './subcomponent/DialogCustom';
 import MenuBar from './MenuBar';
@@ -136,7 +136,7 @@ export default class Canvas extends Component {
         var eh = this.cy.edgehandles()
         this.cy.one('cxttap', function(evt){
             eh.disableDrawMode()
-        });
+        })
 
         this.cy.cxtmenu({
             selector: 'core',   
@@ -165,8 +165,17 @@ export default class Canvas extends Component {
     }
    
     addEdge =()=>{
-        var eh = this.cy.edgehandles()
-        eh.enableDrawMode()
+        if(this.cy.nodes().length<=0){
+            alert('node kosong')
+        }
+        else if(this.cy.nodes().length===1){
+            alert('Node hanya 1, tambahkan lebih banyak node lagi!')
+        }
+        else{
+            var eh = this.cy.edgehandles()
+            eh.enableDrawMode()
+        }
+        
     }
 
     handleDialogOpen = () =>{
