@@ -173,6 +173,7 @@ export default class Canvas extends Component {
         }
         else{
             var eh = this.cy.edgehandles()
+            localStorage.setItem('data', JSON.stringify(this.cy.json().elements.nodes))
             eh.enableDrawMode()
         }
         
@@ -181,7 +182,11 @@ export default class Canvas extends Component {
     handleDialogOpen = () =>{
         this.setState({
             isClosed : false
-        },()=>{console.log(this.state.isClosed)})
+        })
+        var eh = this.cy.edgehandles()
+        this.cy.one('cxttap', function(evt){
+            eh.disableDrawMode()
+        })
     }
 
     handleDialogClose = ()=>{
@@ -192,6 +197,7 @@ export default class Canvas extends Component {
 
     handleAddNewNode = (e) =>{
         e.preventDefault();
+        console.log(e)
         this.setState({Clicked: !this.state.Clicked});
         var data_add = {}, unique_id = uuidv4()
         
@@ -212,6 +218,9 @@ export default class Canvas extends Component {
         this.setState({
             isClosed:true
         })
+        console.log(this.cy.json())
+        // const { data } = this.state
+        localStorage.setItem('data', JSON.stringify(this.cy.json().elements.nodes))
     }
     handleNodeName = (e) =>{
         this.setState({
@@ -225,7 +234,7 @@ export default class Canvas extends Component {
         };
         return (
             <div>
-                <MenuBar cy={this.state.cy}/>
+                <MenuBar cy={this.state.cy} isClosed={this.handleDialogOpen}/>
                 <div style={cyStyle} id="cy"/>
                 <DialogCustom
                     isOpen={this.state.isClosed}

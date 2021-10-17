@@ -5,9 +5,12 @@ import {saveAs} from "file-saver"
 initializeIcons();
 
 class MenuBar extends Component {
-	// constructor(props) {
-	// 	super(props)
-	// }
+	constructor(props) {
+		super(props)
+        this.state = {
+            isClosed: true
+        }
+	}
 
     exportJPG = ()=>{
 		saveAs(this.props.cy.jpg(),"graph download.jpg")
@@ -15,6 +18,9 @@ class MenuBar extends Component {
     exportPNG = ()=>{
 		saveAs(this.props.cy.png({bg:"white"}),"graph download.png")
 	}
+    handleCloseDialog = () =>{
+        console.log(this.props.isClosed)
+    }
     render() {
         return (
             <div>
@@ -30,6 +36,7 @@ class MenuBar extends Component {
                                 key: 'node',
                                 text: 'Node',
                                 iconProps: { iconName: 'LocationCircle' },
+                                onClick: this.props.isClosed
                             },
                             {
                                 key: 'edge',
