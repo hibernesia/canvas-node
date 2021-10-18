@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { CommandBar } from 'office-ui-fabric-react/lib/CommandBar';
 import { initializeIcons } from '@uifabric/icons';
 import {saveAs} from "file-saver"
+import { json2csv } from 'json-2-csv'
 initializeIcons();
 
 class MenuBar extends Component {
@@ -20,6 +21,29 @@ class MenuBar extends Component {
 	}
     handleCloseDialog = () =>{
         console.log(this.props.isClosed)
+    }
+    exportCSV = () =>{
+        var workspace='', jsondata = []
+
+        this.props.cy.elements().nodes().map((data)=>{
+            // console.log(data)
+            jsondata.push(data._private.data)
+        })
+        
+        if(this.props.cy.elements().length!==0){
+            workspace = 'graph.csv'
+
+            json2csv(jsondata,(err,csv)=>{
+                var textEncoder = new TextEncoder('windows-1252'), csvContentEncoded, blob
+    
+                csvContentEncoded = textEncoder.encode([csv]);
+                blob = new Blob([csvContentEncoded], {type: 'text/csv;charset=windows-1252;'});
+                saveAs(blob, workspace);
+            })
+        }
+        else{
+            alert('node empty')
+        }
     }
     render() {
         return (
@@ -63,6 +87,12 @@ class MenuBar extends Component {
                                     text: 'PNG',
                                     iconProps: { iconName: 'FileImage' },
                                     onClick : this.exportPNG
+                                },
+                                {
+                                    key: 'csv',
+                                    text: 'CSV',
+                                    iconProps: { iconName: 'FileImage' },
+                                    onClick : this.exportCSV
                                 },
                             ],
                         }}
