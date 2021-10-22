@@ -91,7 +91,7 @@ class MenuBar extends Component {
                                 {
                                     key: 'csv',
                                     text: 'CSV',
-                                    iconProps: { iconName: 'FileImage' },
+                                    iconProps: { iconName: 'TextDocument' },
                                     onClick : this.exportCSV
                                 },
                             ],
