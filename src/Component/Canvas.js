@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import DialogCustom from './subcomponent/DialogCustom';
 import MenuBar from './MenuBar';
 import { TextField } from '@fluentui/react';
+import { PostData } from './subcomponent/indexedDB';
 
 cytoscape.use( cxtmenu );
 cytoscape.use( edgehandles );
@@ -219,8 +220,9 @@ export default class Canvas extends Component {
             isClosed:true
         })
         console.log(this.cy.json())
-        // const { data } = this.state
-        localStorage.setItem('data', JSON.stringify(this.cy.json().elements.nodes))
+        PostData(data_add.data)
+        // // const { data } = this.state
+        // localStorage.setItem('data', JSON.stringify(this.cy.json().elements.nodes))
     }
     handleNodeName = (e) =>{
         this.setState({

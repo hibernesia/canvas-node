@@ -27,7 +27,7 @@ class MenuBar extends Component {
 
         this.props.cy.elements().nodes().map((data)=>{
             // console.log(data)
-            jsondata.push(data._private.data)
+            return jsondata.push(data._private.data)
         })
         
         if(this.props.cy.elements().length!==0){
@@ -91,7 +91,7 @@ class MenuBar extends Component {
                                 {
                                     key: 'csv',
                                     text: 'CSV',
-                                    iconProps: { iconName: 'FileImage' },
+                                    iconProps: { iconName: 'TextDocument' },
                                     onClick : this.exportCSV
                                 },
                             ],
