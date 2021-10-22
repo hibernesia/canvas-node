@@ -222,7 +222,7 @@ export default class Canvas extends Component {
         console.log(this.cy.json())
         PostData(data_add.data)
         // // const { data } = this.state
-        // localStorage.setItem('data', JSON.stringify(this.cy.json().elements.nodes))
+        localStorage.setItem('data', JSON.stringify(this.cy.json().elements.nodes))
     }
     handleNodeName = (e) =>{
         this.setState({
